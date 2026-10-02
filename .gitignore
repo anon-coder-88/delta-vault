@@ -1,0 +1,12 @@
+node_modules
+artifacts/
+cache/
+coverage/
+.env
+.env.*
+!.env.example
+__pycache__/
+.venv/
+web/config.json
+deployments.json
+*.tsbuildinfo
