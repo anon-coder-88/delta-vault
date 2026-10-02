@@ -14,7 +14,6 @@ jobs:
       - run: npm ci
       - run: npm run compile
       - run: npm test
-      - run: npm run test:website
       - run: npx tsc --noEmit
       - run: node --check web/app.js
       - run: python -m py_compile helpers/*.py
@@ -33,5 +32,6 @@ jobs:
         with:
           node-version: '22'
       - run: pnpm install --frozen-lockfile
+      - run: pnpm exec tsx --test tests/*.test.ts
       - run: pnpm exec tsc --noEmit
       - run: pnpm build
