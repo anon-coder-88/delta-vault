@@ -1,0 +1,3 @@
+Wallet brand marks adapted from @web3icons/react 4.1.23 (MIT license):
+https://web3icons.io/
+MetaMask, Coinbase Wallet, Rabby, and WalletConnect names and marks belong to their respective owners.
