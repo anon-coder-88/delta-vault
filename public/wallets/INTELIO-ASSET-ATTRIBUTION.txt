@@ -1,4 +1,0 @@
-Wallet logo artwork from @web3icons/core 4.0.57, MIT License.
-https://github.com/0xa3k5/web3icons
-Wallet names and marks remain the property of their respective owners.
-Brave icon from simple-icons 16.33.0, CC0-1.0. https://simpleicons.org/
