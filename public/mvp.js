@@ -7,9 +7,13 @@ const status=document.querySelector('#status');
 const error=document.querySelector('#wallet-error');
 const announced=new Map();
 const brands=[
-  {name:'MetaMask',icon:'metamask',url:'https://metamask.io/download/',matches:(name,p)=>/metamask/i.test(name)||Boolean(p.isMetaMask&&!p.isRabby)},
+  {name:'MetaMask',icon:'metamask',url:'https://metamask.io/download/',matches:(name,p)=>/metamask/i.test(name)||Boolean(p.isMetaMask&&!p.isRabby&&!p.isPhantom&&!p.isBraveWallet)},
+  {name:'Rabby',icon:'rabby',url:'https://rabby.io/',matches:(name,p)=>/rabby/i.test(name)||Boolean(p.isRabby)},
   {name:'Coinbase Wallet',icon:'coinbase',url:'https://www.coinbase.com/wallet/downloads',matches:(name,p)=>/coinbase/i.test(name)||Boolean(p.isCoinbaseWallet)},
-  {name:'Rabby',icon:'rabby',url:'https://rabby.io/',matches:(name,p)=>/rabby/i.test(name)||Boolean(p.isRabby)}
+  {name:'Phantom',icon:'phantom',url:'https://phantom.com/download',matches:(name,p)=>/phantom/i.test(name)||Boolean(p.isPhantom)},
+  {name:'Trust Wallet',icon:'trust',url:'https://trustwallet.com/download',matches:(name,p)=>/trust/i.test(name)||Boolean(p.isTrust||p.isTrustWallet)},
+  {name:'OKX Wallet',icon:'okx',url:'https://web3.okx.com/download',matches:(name,p)=>/okx|okex/i.test(name)||Boolean(p.isOkxWallet||p.isOKExWallet)},
+  {name:'Brave Wallet',icon:'brave',url:'https://brave.com/wallet/',matches:(name,p)=>/brave/i.test(name)||Boolean(p.isBraveWallet)}
 ];
 
 function candidates(){
