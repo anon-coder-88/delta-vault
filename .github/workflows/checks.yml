@@ -1,7 +1,7 @@
-name: Utility checks
+name: DeltaVault checks
 on: [push, pull_request]
 jobs:
-  verify:
+  utility:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,7 +14,24 @@ jobs:
       - run: npm install
       - run: npm run compile
       - run: npm test
+      - run: npm run test:website
       - run: npx tsc --noEmit
       - run: node --check web/app.js
       - run: python -m py_compile helpers/*.py
       - run: npm run languages
+  website:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: website
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '11.25.0'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec tsc --noEmit
+      - run: pnpm build

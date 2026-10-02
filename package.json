@@ -1,9 +1,11 @@
 {
-  "name": "deltavault-utility",
+  "name": "delta-vault",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": {"node": ">=22.13.0"},
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",
@@ -12,15 +14,25 @@
     "deploy:testnet": "hardhat run scripts/deploy.ts --network robinhoodTestnet",
     "price:testnet": "hardhat run scripts/price.ts --network robinhoodTestnet",
     "languages": "python3 helpers/languages.py",
-    "web": "python3 -m http.server 8080 --directory web"
+    "web": "python3 -m http.server 8080 --directory web",
+    "interact": "tsx scripts/interact.ts",
+    "website:dev": "npm --prefix website run dev",
+    "website:build": "npm --prefix website run build",
+    "website:check": "tsc --noEmit --project website/tsconfig.json",
+    "test:website": "node --import tsx --test website/tests/*.test.ts"
   },
-  "dependencies": {"@openzeppelin/contracts": "5.6.1", "ethers": "6.17.0"},
+  "dependencies": {
+    "@openzeppelin/contracts": "5.6.1",
+    "ethers": "6.17.0",
+    "viem": "2.56.9"
+  },
   "devDependencies": {
     "hardhat": "3.18.0",
     "@nomicfoundation/hardhat-ethers": "4.2.0",
     "@nomicfoundation/hardhat-node-test-runner": "3.1.0",
     "dotenv": "17.4.2",
     "typescript": "5.9.3",
-    "@types/node": "22.19.19"
+    "@types/node": "22.19.19",
+    "tsx": "4.23.15"
   }
 }

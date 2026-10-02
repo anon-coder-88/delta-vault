@@ -1,74 +1,94 @@
-# DeltaVault MVP utility
+# DeltaVault
 
-A focused, executable **testnet utility** derived from the DeltaVault Website PRD (draft v1.0, 2 October 2026). Liquidity providers fund separate BTC-USD and ETH-USD vault ledgers; traders use test collateral to open leveraged long/short positions against that market's liquidity. Positions close or liquidate onchain, and LP shares reflect trader outcomes.
+A runnable, open-source testnet MVP for market-specific liquidity and leveraged long/short trading, with the **complete existing DeltaVault website**. The original contracts and website are reused; the website now has a contract execution mode backed by a shared TypeScript SDK. The simulated demo remains separately available.
 
-The previously created `DeltaVaultMVP.sol` and `MockUSD.sol` are reused unchanged. This repository extracts that utility instead of restoring the full marketing website. A small browser client connects to the contracts. The existing hosted website is a separate project.
+## Repository
 
-## Scope and PRD derivation
-
-| PRD area | Implemented utility |
+| Path | Purpose |
 | --- | --- |
-| VLT 002 / VLT 003 | Six-decimal test collateral, market-specific LP shares, deposit and reserve-aware withdrawal |
-| TRD 001 / TRD 003 / TRD 004 | Collateral × leverage exposure, long/short entry and one-time settlement |
-| RSK 001 / RSK 002 | Capacity checks, bounded PnL, permissionless unhealthy-position liquidation |
-| WAL 001 / WAL 002 | Browser wallet discovery, account connection, deployment-network gating |
-| DAT 001 / DOC 001 | Contract events, timestamped test prices, read-only lens and documented assumptions |
+| `website/` | Complete React website, styling, animations, wallet brand assets and execution views |
+| `contracts/` | Solidity escrow, market accounting, positions, settlement, liquidation and lens |
+| `sdk/` | Public export of the website's shared contract client |
+| `scripts/` | Hardhat deployment, test-price updates and interaction CLI |
+| `helpers/` | Python chain inspection and source-language measurement |
+| `test/` | Contract scenarios and shared SDK integration journey |
+| `web/` | Independent HTML/CSS/JavaScript contract client retained from the earlier MVP |
+| `deployments/` | Deployment instructions; generated local configuration is ignored |
+| `docs/` | Architecture, contract rules and limitations |
 
-The PRD specifies a demonstration website and leaves live execution interfaces and production risk policies unresolved. The new source utility is a testnet extension requested here, **not an approved production protocol**. No native project token, staking, governance, funding payments, production oracle, or mainnet deployment is implemented.
+Solidity ^0.8.20 with OpenZeppelin, TypeScript, Python, HTML, CSS and JavaScript are all included. The website's existing framework, package manifest and pnpm lockfile are preserved.
 
-## Contracts and accounting
+## Run a complete local journey
 
-- `DeltaVaultMVP`: reused escrow and market ledgers. Deposits mint proportional shares; withdrawals burn them and cannot spend reserved liquidity. Fee-on-transfer collateral is rejected.
-- `MockUSD`: one 10,000 dvUSD faucet claim per address. This is a test asset, not a stablecoin or native DeltaVault token.
-- `DeltaVaultLens`: read-only market/account snapshots, deposit/withdraw/open quotes, and position payout/liquidation status. Quotes can change before transaction execution.
-- `contracts/test`: local scenario actors and transfer-tax fixtures. They are not deployed by the utility deployment script.
-
-Illustrative rules: leverage 1–5×; open-position notional reserves its maximum profit; total reserves may not exceed 80% of current market liquidity; profit capped at notional; loss capped at posted collateral; liquidation permitted at an 80% collateral loss. Price precision is 8 decimals, collateral/share precision 6 decimals. Owner-set prices expire after one hour. These fixed rules are MVP assumptions, not the PRD's unresolved production maintenance-margin formula. Trader profits reduce that market's LP assets; trader losses increase them. Withdrawal shares round down to assets; deposits round down to shares. The lens uses matching rounding.
-
-Pausing blocks new deposits and positions; funded withdrawals and closes remain available subject to reserve and fresh-price checks. Disabling a market blocks new entries but permits exits. An owner can delay settlement by failing to refresh prices. This centralized test-price dependency is intentional and makes the utility unsuitable for real capital.
-
-## Run locally
-
-Requires Node.js 22.13+ and Python 3.10+ (Python is optional unless using the helper).
+Requires Node 22.13+ and Python 3.10+; pnpm 11.25.0 is specified by the website. Use a disposable test wallet and development chain only.
 
 ```sh
 npm install
+cp .env.example .env
 npm run compile
 npm test
 npm run languages
-cp .env.example .env
 npm run node
 ```
 
-Keep the local node running. In another terminal:
+Keep the node running. In another terminal:
 
 ```sh
 npm run deploy:local
-npm run web
+cd website
+pnpm install
+pnpm dev
 ```
 
-Open `http://localhost:8080`. Add local chain ID **31337** to a test wallet and use a disposable local development account supplied by Hardhat. The deploy script writes `web/config.json` with public addresses and ABIs. Choose a wallet, connect, claim dvUSD, approve an amount, deposit liquidity, then open and close a position. Approvals and utility actions are separate transactions; only receipts establish confirmation. The UI reports the actual position ID from the emitted event.
+Open the local URL printed by the website server (normally http://localhost:5173). Deploying generates public configuration in `website/public/deltavault-deployment.json`. Choose a wallet through **Connect Wallet**, add/switch to local chain 31337 (RPC http://127.0.0.1:8545), and use a disposable Hardhat development account. Its standard development key is public and must never receive real funds; no key is stored in this repository.
 
-## Robinhood Chain testnet
+1. Open Vaults in **Testnet contracts** mode and claim test dvUSD.
+2. Enter 1,000 dvUSD, approve that exact amount, wait for confirmation, then deposit.
+3. Open Trade, enter 100 dvUSD, approve, and open a 3× long or short.
+4. The confirmed event supplies the actual position ID. Close it at the current test price, or change the test price using the deployer script to explore profit/loss.
+5. View contract share value and balances in Portfolio. Withdraw your shares after reserves are released.
 
-Set `RH_RPC_URL` and a disposable, funded `RH_PRIVATE_KEY` in your ignored `.env`, then run:
+The account can be both LP and trader for exploration. Tests use separate accounts. To liquidate, anyone can supply an active position ID whose loss reaches 80% of collateral at a fresh test price. The contract price, pause and capacity checks are authoritative.
+
+The HTML client is also available through `npm run web` at http://localhost:8080 and uses the same deployed contracts; it imports pinned ethers from a CDN. Its wallet chooser is the minimal utility client, while the complete website retains branded wallet options.
+
+## Developer interaction tools
+
+Run from the repository root. Reads use `ACCOUNT_ADDRESS` without a private key. Writes require a disposable `RH_PRIVATE_KEY` in the ignored `.env`; set `RH_RPC_URL` to the deployment's RPC.
 
 ```sh
-npm run deploy:testnet
-npm run web
+RH_RPC_URL=http://127.0.0.1:8545 ACCOUNT_ADDRESS=0xYOUR_TEST_ADDRESS npm run interact -- status
+npm run interact -- position 1
+npm run interact -- faucet
+npm run interact -- approve 100
+npm run interact -- deposit 100
+npm run interact -- openPosition 10 2 long
+npm run interact -- closePosition 1
+npm run interact -- withdraw 100
+npm run interact -- liquidate 1
 ```
 
-Connect a wallet on chain **46630**. Obtain test ETH separately from the network faucet; the dvUSD faucet does not supply gas. Local and Robinhood testnet are enforced by the deployed contracts. No testnet contract deployment is claimed merely by publishing this repository.
+Amounts are six-decimal dvUSD; `withdraw` takes six-decimal shares. `MARKET` selects BTC-USD or ETH-USD. The CLI simulates actions and prints successful receipt hashes, not fabricated success.
 
-Refresh a test price with the deployer account:
+SDK entry: `sdk/index.ts`, exporting `DeltaVaultClient`, `parseDeployment`, `marketId`, and the ABIs. It requires viem public and optional wallet clients. See `test/DeltaVaultClient.ts` for an end-to-end integration.
+
+## Robinhood testnet and website publication
+
+Set a funded disposable test key and the testnet RPC in `.env`, then run `npm run deploy:testnet`. The deployment script writes addresses for chain 46630. Obtain test ETH for gas separately. Rebuild/publish the website with its generated public deployment JSON; these are addresses, not secrets. Do not publish local chain configuration to the public hosted website.
+
+No testnet or mainnet contract deployment is claimed by this source publication. Without deployment configuration the website explains that contracts are not configured and retains the selectable simulated demo.
+
+The existing website is hosted through Sites. Its hosting manifest remains intact; GitHub source publication alone does not deploy the website. The public standalone configuration requires no private key.
+
+Refresh owner-set prices:
 
 ```sh
-DELTAVAULT_ADDRESS=0xYOUR_DEPLOYED_VAULT MARKET=BTC-USD TEST_PRICE=66000 npm run price:testnet
+DELTAVAULT_ADDRESS=0xYOUR_VAULT MARKET=BTC-USD TEST_PRICE=66000 npx hardhat run scripts/price.ts --network localhost
+# Testnet:
+npm run price:testnet
 ```
 
-For local price changes use `npx hardhat run scripts/price.ts --network localhost` with the same variables. Default market examples are BTC-USD at 60,000 and ETH-USD at 3,000; they are not live price feeds.
-
-Optional read helper:
+Python helper:
 
 ```sh
 python3 -m venv .venv
@@ -77,14 +97,12 @@ pip install -r requirements.txt
 RH_RPC_URL=http://127.0.0.1:8545 python helpers/inspect.py
 ```
 
-Use the configured testnet RPC instead for testnet reads. No private key is used by the helper. Browser ethers imports from a pinned public CDN, so that client needs internet access. The npm/contract tests run independently of the browser client.
+## Verification, scope and language target
 
-## Verification and language composition
+Run `npm test`, `npx tsc --noEmit`, and `npm run website:check`. Website build: `pnpm --dir website build`. Verification results are in `VALIDATION.md`; architecture and test rules are in `docs/`.
 
-The test suite exercises long/short settlement, LP loss and accounting conservation, exact capacity boundaries, pause exits, position ownership, liquidation terminal states, market isolation, transfer-tax rejection, lens quotes, and stale-price/unauthorized-price rejection. CI compiles contracts, runs tests, checks TypeScript and JavaScript, and enforces the Solidity ratio.
+The PRD's core vault/trading flow is implemented experimentally. Native token, governance, production oracle, automated keeper, production fee economics, and real-fund readiness are not implemented. Prices remain centrally controlled; contracts are unaudited. The onchain rules differ from the clearly labelled simulated website rules.
 
-`npm run languages` measures authored source bytes across Solidity, TypeScript, Python, HTML, CSS, and JavaScript. It excludes installed dependencies, generated artifacts, deployment config, and documentation; it does not vendor OpenZeppelin or manipulate GitHub language classification. The measured results are in `LANGUAGES.json`. Solidity remains above 50% even when Solidity test contracts are excluded. GitHub may refresh its language bar asynchronously.
+**The requested 50% Solidity target is not met when the complete website is included.** `LANGUAGES.json` reports the actual byte proportions, including TSX and JavaScript module files, excluding dependencies and generated builds. The original complete website is preserved instead of being omitted to satisfy a percentage. No filler contracts or language classification overrides are used. Reaching 50% requires a separately defined, substantially larger protocol scope; it is not a property of this MVP integration.
 
-No private keys are committed. Keep `.env`, dependencies, artifacts, and generated `web/config.json` out of source control. The contracts are not audited.
-
-Official network configuration: https://docs.robinhood.com/chain/connecting/ and https://docs.robinhood.com/chain/add-network-to-wallet/ (checked 2 October 2026). OpenZeppelin dependency: https://docs.openzeppelin.com/contracts/5.x/.
+Never commit `.env`, signing keys, dependency folders or build output. Deployment files contain public configuration only. No software license is granted here beyond licenses already attached to reused components; wallet asset attribution remains in the website source.

@@ -1,20 +1,23 @@
 {
   "source_bytes": {
-    "TypeScript": 5469,
+    "TypeScript": 364957,
     "HTML": 1779,
-    "JavaScript": 4074,
-    "CSS": 1074,
+    "JavaScript": 51101,
+    "CSS": 71919,
     "Solidity": 23550,
-    "Python": 2150
+    "Python": 2456
   },
-  "solidity_percent": 61.82,
+  "solidity_percent": 4.57,
   "production_source_bytes": {
-    "TypeScript": 3047,
+    "TypeScript": 352370,
     "HTML": 1779,
-    "JavaScript": 4074,
-    "CSS": 1074,
+    "JavaScript": 51101,
+    "CSS": 71919,
     "Solidity": 15347,
-    "Python": 2150
+    "Python": 2456
   },
-  "production_solidity_percent": 55.87
+  "production_solidity_percent": 3.1,
+  "target_percent": 50,
+  "target_met": false,
+  "method": "Source bytes; complete website included, dependencies and generated output excluded; no language overrides."
 }
