@@ -1,22 +1,13 @@
-# Verification — 2 October 2026
+# Validation record
 
-## Passed locally
+Executed locally on 2 October 2026.
 
-- Solidity compiled with compiler 0.8.24 and OpenZeppelin 5.6.1. The reused contracts retain pragma ^0.8.20. No contract source was padded or rewritten for a language percentage.
-- Ten automated tests passed: long/short settlement, capacity and pause, ownership and liquidation, market isolation, transfer-tax rejection, lens quotes, stale/unauthorized prices, deployment-file validation, and the shared SDK journey.
-- The SDK journey uses the same client as the website: faucet, exact approval, LP deposit, trader entry, receipt-derived ID, account mismatch rejection, unauthorized close rejection, changed-price profit, settlement, withdrawal and repeat-close rejection. Bounded portfolio history is checked against account ownership.
-- Root TypeScript and website TypeScript checks passed.
-- All 16 preserved website demo/data tests passed.
-- Production website build passed and pre-rendered all routes, including the new contract execution route.
-- Local Hardhat RPC deployment succeeded; generated website deployment chain and all three contract bytecodes were verified. Local chain configuration remains ignored and is not installed on the public hosted website.
-- Standalone JavaScript syntax and Python helper syntax passed.
+1. Re-read the DeltaVault PRD; mapped the market-specific vault/trading utility to VLT, TRD, RSK, WAL, and DAT requirements. Existing core and test collateral contracts reused byte-for-byte.
+2. Solidity 0.8.24 compilation passed. Contracts use `pragma solidity ^0.8.20` and pinned OpenZeppelin 5.6.1 imports.
+3. Eight Hardhat tests passed: long settlement, short settlement, capacity/pause exits, liquidation/ownership, market isolation, transfer-tax rejection, lens quotes, stale prices/unauthorized price updates.
+4. TypeScript checking, JavaScript syntax, and Python syntax checks passed. The Python web3.py helper was not executed because its Python dependencies are not installed in this workspace.
+5. Local RPC deployment passed: MockUSD, DeltaVaultMVP, and DeltaVaultLens deployed; bytecode existed at all generated addresses; browser config matched chain 31337. No Robinhood testnet deployment or browser-wallet signing test is claimed.
+6. All deployment contract runtime sizes were below the EVM 24,576-byte limit: core 7,023, lens 5,172, token 2,031 bytes. The local-only Solidity scenario harness also deployed below that limit.
+7. `LANGUAGES.json` records source bytes. Both all-source and non-test-source Solidity shares exceed 50%. No dependency vendoring, filler contracts, or GitHub language overrides are used.
 
-## Limits
-
-- No funded Robinhood testnet signer was available, so no public testnet contract deployment or real browser wallet transaction is claimed.
-- The public website displays a deployment setup state and provides a separate simulated demo until public testnet addresses are configured.
-- Python web3 dependencies were not installed in the execution environment; the helper's web3 runtime was not exercised.
-- The browser's signer integration uses the existing wagmi wallet chooser, but automated contract tests do not prove extension-specific signing behavior.
-- CI configuration is included; GitHub CI results must be checked separately after publication. Clean dependency installation was not independently repeated; local verification used existing installed dependencies.
-- Solidity remains below 50% of the combined authored source. `LANGUAGES.json` includes the full website and reports both overall and non-test proportions honestly.
-- Centralized test prices, missing slippage bounds, lack of an audit, and the experimental liquidation rule make this unsuitable for real funds.
+Remaining production work: independent contract review/audit, approved oracle and risk specification, production collateral policy, market governance, and live deployment/operational verification. This repository is a testnet MVP.

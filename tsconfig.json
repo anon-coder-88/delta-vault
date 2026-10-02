@@ -1,16 +1,1 @@
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "strict": true,
-    "skipLibCheck": true,
-    "noEmit": true
-  },
-  "include": [
-    "hardhat.config.ts",
-    "scripts/*.ts",
-    "test/*.ts",
-    "sdk/*.ts"
-  ]
-}
+{"compilerOptions":{"target":"ES2022","module":"NodeNext","moduleResolution":"NodeNext","strict":true,"skipLibCheck":true,"noEmit":true},"include":["hardhat.config.ts","scripts/*.ts","test/*.ts"]}

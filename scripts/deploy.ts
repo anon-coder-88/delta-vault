@@ -1,6 +1,6 @@
 import {network} from 'hardhat';
 import {keccak256,toUtf8Bytes,parseUnits} from 'ethers';
-import {writeFileSync,mkdirSync} from 'node:fs';
+import {writeFileSync} from 'node:fs';
 
 const {ethers}=await network.create();
 const chain=await ethers.provider.getNetwork();
@@ -15,9 +15,5 @@ await (await vault.createMarket(markets['ETH-USD'],parseUnits('3000',8))).wait()
 const config={chainId:Number(chain.chainId),token:await token.getAddress(),vault:await vault.getAddress(),lens:await lens.getAddress(),markets,
  tokenAbi:JSON.parse(token.interface.formatJson()),vaultAbi:JSON.parse(vault.interface.formatJson()),lensAbi:JSON.parse(lens.interface.formatJson())};
 writeFileSync('web/config.json',JSON.stringify(config,null,2));
-const deployment={version:1,chainId:config.chainId,token:config.token,vault:config.vault,lens:config.lens};
-mkdirSync('deployments',{recursive:true});mkdirSync('website/public',{recursive:true});
-writeFileSync('deployments/current.json',JSON.stringify(deployment,null,2));
-writeFileSync('website/public/deltavault-deployment.json',JSON.stringify(deployment,null,2));
 console.log(JSON.stringify({chainId:config.chainId,token:config.token,vault:config.vault,lens:config.lens,markets},null,2));
 console.log('web/config.json contains public addresses and ABIs; no private key.');

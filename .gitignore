@@ -10,10 +10,3 @@ __pycache__/
 web/config.json
 deployments.json
 *.tsbuildinfo
-
-website/dist/
-website/.next/
-website/.wrangler/
-website/.sites-runtime/
-deployments/current.json
-website/public/deltavault-deployment.json
