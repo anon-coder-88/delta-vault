@@ -1,0 +1,6 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {getQuote,getCandles} from '../lib/deltavault/data';
+test('quote accepts real source fields and rejects invalid price',async()=>{const original=globalThis.fetch;try{globalThis.fetch=async()=>Response.json({price:'68420',time:'2026-10-02T12:00:00Z'});assert.equal((await getQuote('BTC-USD')).price,68420);globalThis.fetch=async()=>Response.json({price:'0',time:'invalid'});await assert.rejects(getQuote('BTC-USD'),/Invalid/)}finally{globalThis.fetch=original}});
+test('candle adapter sorts, deduplicates, preserves gaps and rejects empty data',async()=>{const original=globalThis.fetch;try{globalThis.fetch=async()=>Response.json([[2800,1,4,2,3,10],[100,1,4,2,2,10],[100,1,4,2,2,10]]);assert.deepEqual(await getCandles('BTC-USD','1D'),[{time:100,value:2},{time:1000},{time:2800,value:3}]);globalThis.fetch=async()=>Response.json([]);await assert.rejects(getCandles('BTC-USD','1D'),/unavailable/)}finally{globalThis.fetch=original}});
+test('rate limit has actionable failure state',async()=>{const original=globalThis.fetch;try{globalThis.fetch=async()=>new Response(null,{status:429});await assert.rejects(getQuote('BTC-USD'),/rate limit/)}finally{globalThis.fetch=original}});
