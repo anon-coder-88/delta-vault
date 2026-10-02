@@ -101,3 +101,5 @@ The PRD's core vault/trading flow is implemented experimentally. Native token, g
 **The requested 50% Solidity target is not met when the complete website is included.** `LANGUAGES.json` reports the actual byte proportions, including TSX and JavaScript module files, excluding dependencies and generated builds. The original complete website is preserved instead of being omitted to satisfy a percentage. No filler contracts or language classification overrides are used. Reaching 50% requires a separately defined, substantially larger protocol scope; it is not a property of this MVP integration.
 
 Never commit `.env`, signing keys, dependency folders or build output. Deployment files contain public configuration only. No software license is granted here beyond licenses already attached to reused components; wallet asset attribution remains in the website source.
+
+GitHub Linguist measured **5.16% Solidity** for the full monorepo ([executed report](https://github.com/anon-coder-88/delta-vault/actions/runs/37070115120)). This confirms that the 50% threshold is not met.
