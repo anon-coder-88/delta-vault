@@ -33,7 +33,7 @@ Copy the printed addresses to `NEXT_PUBLIC_DELTAVAULT_ADDRESS`, `NEXT_PUBLIC_TES
 pnpm dev
 ```
 
-Open `/onchain`. Connect Wallet, switch to Robinhood testnet, claim dvUSD, approve an amount, then deposit or open a position. Approvals and actions are separate transactions. Position IDs are shown by `nextPositionId` and in the `PositionOpened` event. `/mvp.html` is a small plain HTML/CSS/JavaScript entry page for the same app.
+Open `/onchain`. Connect Wallet, switch to Robinhood testnet, claim dvUSD, approve an amount, then deposit or open a position. Approvals and actions are separate transactions. Position IDs are shown by `nextPositionId` and in the `PositionOpened` event. `/mvp.html` is a small plain HTML/CSS/JavaScript entry page for the same app. Its Connect Wallet menu detects installed MetaMask, Coinbase Wallet, Rabby, and other injected EVM wallets and shows install links when a named extension is missing. The full app can show WalletConnect QR when `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` is configured before building; it is omitted otherwise.
 
 The deployer can update a test price with `MARKET=BTC-USD TEST_PRICE=61000 pnpm contracts:price:testnet`. Test prices must be updated at least hourly for trading or settlement. The UI does not set prices.
 
