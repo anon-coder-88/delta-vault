@@ -1,0 +1,29 @@
+{
+  "name": "deltavault-protocol",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "build": "npm run abi && tsc --noEmit && vite build apps/web",
+    "abi": "node scripts/abi.mjs",
+    "test:sdk": "node --import tsx --test packages/sdk/*.test.ts",
+    "journey": "node --import tsx scripts/journey.ts",
+    "dev": "vite apps/web --host 127.0.0.1",
+    "contracts:build": "forge build",
+    "contracts:test": "forge test",
+    "contracts:fmt": "forge fmt --check"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "5.4.0",
+    "viem": "2.56.9"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.19",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vite": "8.0.13"
+  }
+}
