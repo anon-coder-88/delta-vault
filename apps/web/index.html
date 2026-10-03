@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DeltaVault · Local Protocol Console</title><link rel="stylesheet" href="./style.css"></head>
+<body>
+<main>
+  <p class="eyebrow">DELTAVAULT / PROTOCOL MVP</p><h1>Isolated liquidity.<br>Bounded exposure.</h1>
+  <p>Local chain console · Development collateral and manual oracle. This console submits real transactions to your local chain. It is separate from the hosted website demonstration.</p>
+  <aside>Chain 31337 only. LP entry and exit are locked while any position is open. Profits are capped. No public deployment or production oracle is configured.</aside>
+  <section><h2>Connection</h2><label>Local vault address<input id="vault" placeholder="0x…" autocomplete="off"></label><button id="connect">Connect local wallet</button><button id="refresh">Refresh onchain state</button><p id="account">Disconnected</p></section>
+  <section><h2>Liquidity</h2><label>Collateral amount (token units)<input id="amount" value="100" inputmode="decimal"></label><button id="approve">Approve this amount</button><button id="deposit">Deposit</button><button id="redeem">Redeem all my shares</button></section>
+  <section><h2>Trading</h2><label>Leverage<select id="leverage"><option value="10000">1×</option><option value="20000">2×</option><option value="50000">5×</option></select></label><label>Direction<select id="direction"><option value="long">Long</option><option value="short">Short</option></select></label><button id="open">Open position</button><label>Position ID<input id="position" value="1" inputmode="numeric"></label><button id="close">Close my position</button><button id="liquidate">Liquidate eligible position</button><button id="expire">Settle expired position</button><button id="recover">Recover after oracle failure</button><button id="claim">Withdraw my claim</button></section>
+  <section><h2>Onchain snapshot</h2><p>LP asset values exclude trader collateral and settled claims. Amounts below use raw base units.</p><pre id="snapshot">No read yet</pre></section>
+  <p id="status" role="status" aria-live="polite">Ready. Deploy locally first; see docs/deployment.md.</p>
+  <footer>Independent third-party software. Local MVP, not audited. No token economics implemented.</footer>
+</main><script type="module" src="./main.ts"></script>
+</body></html>
