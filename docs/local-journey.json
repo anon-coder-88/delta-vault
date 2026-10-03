@@ -1,0 +1,83 @@
+{
+  "mode": "local-chain integration",
+  "chainId": 31337,
+  "token": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+  "oracle": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+  "vault": "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0",
+  "admin": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "lp": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+  "trader": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+  "positionId": "1",
+  "lpBalance": "9500000000",
+  "traderBalance": "1500000000",
+  "vaultBalance": "0",
+  "final": {
+    "assets": "0",
+    "reserve": "0",
+    "escrow": "0",
+    "totalClaims": "0",
+    "exposure": "0",
+    "count": "0",
+    "claim": "0",
+    "shares": "0",
+    "price": "220000000000"
+  },
+  "transactions": [
+    {
+      "step": "deploy DevelopmentAsset",
+      "hash": "0x04acf8a2b41aa85de7e1d040a6142e72680177e197c7f22b81763edaf6843f8f"
+    },
+    {
+      "step": "deploy DevelopmentPriceSource",
+      "hash": "0xcb35b0e24c2c64ce3b781643e90ae8d71bc4cf0709f5e6bcf182b42fc8cb64ff"
+    },
+    {
+      "step": "deploy MarketVault",
+      "hash": "0x656b893c1af42f88e2354864837bf3c675915f244dff802fbb2efc9142fc5f02"
+    },
+    {
+      "step": "publish development quote",
+      "hash": "0x1c3f99ff89243809e5f05a8f0dc5e02fe4ab0ecfd0d2a8c0262d889d6d31cc3d"
+    },
+    {
+      "step": "mint development collateral",
+      "hash": "0x700b43253d8f4b51125b61dbe6757a36cc70a31bcd6c58a71d8c82b8df5ba46f"
+    },
+    {
+      "step": "mint development collateral",
+      "hash": "0x056511540bf19d8628923cb5897e61db6509ebcb6330bc1962cc6c9aa50fb6ea"
+    },
+    {
+      "step": "LP approval via SDK",
+      "hash": "0xeb75a0a98ead8b6f39af8e87479faeb707e7ed4c9bee4f5f2dc6b855b6bb755d"
+    },
+    {
+      "step": "LP deposit via SDK",
+      "hash": "0x0278bf0062e1d523a62ea6d6f8815efc9ee9ea4cd5ed391993e25e3aac09e2be"
+    },
+    {
+      "step": "trader approval via SDK",
+      "hash": "0xb4583935693e4d8913d94ab5e3b4462e1432b743944a59a48821154373eec154"
+    },
+    {
+      "step": "open long via SDK",
+      "hash": "0xefbd751409244750e7c60e5847224e765e0590fb9b785c23fb4f326dcd9410e8"
+    },
+    {
+      "step": "publish development quote",
+      "hash": "0x586bcf0c47fe22ce501c5697b48e37dd2d75ef38ec39c75bc82e197298b85a3b"
+    },
+    {
+      "step": "close long via SDK",
+      "hash": "0x1236177f3f050e7cea0153113dfe95bbb4330d7cec7bdb3a0844637a9b4faa04"
+    },
+    {
+      "step": "trader withdraws claim via SDK",
+      "hash": "0x54dbef88a270307277df47a8061203a8217e7557233bec7e64ce9c90c6aa32b6"
+    },
+    {
+      "step": "LP redemption via SDK",
+      "hash": "0xdc3dc4b00cbb932fdaba14023ef71ca3844359a64e4d005870a393a3569dba99"
+    }
+  ]
+}

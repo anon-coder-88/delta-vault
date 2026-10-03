@@ -1,0 +1,53 @@
+name: Verify protocol
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.19.0'
+          cache: npm
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: v1.7.1
+      - run: npm ci
+      - run: bash scripts/install-forge-std.sh
+      - run: forge fmt --check
+      - run: forge build --sizes
+      - run: forge test
+      - run: npm run build
+      - run: git diff --exit-code -- packages/abi
+      - run: npm run test:sdk
+      - name: Local SDK integration
+        shell: bash
+        run: |
+          anvil --host 127.0.0.1 --port 8545 --silent > /tmp/anvil.log 2>&1 &
+          node_pid=$!
+          trap 'kill "$node_pid"' EXIT
+          npm run journey
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: local-journey-evidence
+          path: docs/local-journey.json
+  language:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+      - run: sudo apt-get update && sudo apt-get install -y cmake libicu-dev
+      - run: gem install github-linguist -v 9.7.0 --no-document
+      - name: Require eligible Solidity majority
+        run: |
+          github-linguist --json > /tmp/languages.json
+          python3 scripts/check-language.py /tmp/languages.json

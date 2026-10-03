@@ -1,0 +1,66 @@
+{
+  "tool": "GitHub Linguist 9.7.0",
+  "local_revision": "87640db54c17ef4e1feae50d020e7f011684e9f2",
+  "eligible_inventory_sha256": "1f76a67f2db341bf10a7aa76c6675f20a34f5f0d0916dfa372ac6902df54daf1",
+  "languages": {
+    "HTML": {
+      "size": 2404,
+      "percentage": "3.36",
+      "files": [
+        "apps/web/index.html"
+      ]
+    },
+    "TypeScript": {
+      "size": 17320,
+      "percentage": "24.22",
+      "files": [
+        "apps/web/main.ts",
+        "packages/sdk/index.test.ts",
+        "packages/sdk/index.ts",
+        "scripts/journey.ts"
+      ]
+    },
+    "CSS": {
+      "size": 1517,
+      "percentage": "2.12",
+      "files": [
+        "apps/web/style.css"
+      ]
+    },
+    "Solidity": {
+      "size": 48709,
+      "percentage": "68.12",
+      "files": [
+        "contracts/script/DeployLocal.s.sol",
+        "contracts/src/MarketVault.sol",
+        "contracts/src/interfaces/IPriceSource.sol",
+        "contracts/src/libraries/PositionMath.sol",
+        "contracts/test/AccountingInvariant.t.sol",
+        "contracts/test/AssetCompatibility.t.sol",
+        "contracts/test/MarketVault.t.sol",
+        "contracts/test/PositionMath.t.sol"
+      ]
+    },
+    "JavaScript": {
+      "size": 500,
+      "percentage": "0.70",
+      "files": [
+        "scripts/abi.mjs"
+      ]
+    },
+    "Python": {
+      "size": 561,
+      "percentage": "0.78",
+      "files": [
+        "scripts/check-language.py"
+      ]
+    },
+    "Shell": {
+      "size": 489,
+      "percentage": "0.68",
+      "files": [
+        "scripts/install-forge-std.sh"
+      ]
+    }
+  }
+}
